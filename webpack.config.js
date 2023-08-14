@@ -28,11 +28,11 @@ mode: 'development',
   devtool: 'inline-source-map',
   output: {
     filename: '[name].bundle.js',
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'public'),
     clean: true,
 },
 devServer: {
-    static: './dist',
+    static: './public',
   },
     plugins: [
         rootHtmlGenerator, new NodePolyfillPlugin()
