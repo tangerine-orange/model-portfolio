@@ -10,6 +10,7 @@
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.1",
     "image-webpack-loader": "^8.1.0",
+    "json-loader": "^0.5.7",
     "node-polyfill-webpack-plugin": "^2.0.1",
     "style-loader": "^3.3.3",
     "webpack": "^5.83.1",

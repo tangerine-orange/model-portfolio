@@ -5,8 +5,13 @@ import Stats from 'three/examples/jsm/libs/stats.module'
 import johnny from "./assets/johnny-dance.fbx"
 import chris from "./assets/chris-dance.fbx"
 import luis from "./assets/luis-dance.fbx"
+import infiniti from "./assets/infiniti.fbx";
 import * as SkeletonUtils from 'three/addons/utils/SkeletonUtils.js';
 import './styles.css';
+import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+import nimbus from './assets/nimbus.json';
+
 
 function createContainer(id) {
     const container = document.createElement('div');
@@ -45,6 +50,7 @@ class FBXClone {
         const clone = SkeletonUtils.clone(object);
         this.object = clone;
         this.object.traverse(o=>o.frustumCulled = false);
+        scene.add(this.object);
     }
 
     animate() {
@@ -53,7 +59,6 @@ class FBXClone {
         const animationAction = mixer.clipAction(
             this.object.animations[0]
         );
-        scene.add(this.object);
         animationAction.play();
 
         return mixer;
@@ -108,6 +113,8 @@ controls.target.set(0, 1, 0)
 //     }
 // }
 
+let loaded = false;
+
 async function createObject(model) {
     const fbxLoader = new FBXLoader()
     let modelReady = false;
@@ -116,6 +123,7 @@ async function createObject(model) {
     object.scale.set(.01, .01, .01)
     objectCaptured = SkeletonUtils.clone(object);
     modelReady = true;
+    loaded = true;
     
     const clone = new FBXClone(object);
     objects.push(clone);
@@ -124,8 +132,26 @@ async function createObject(model) {
     return object;
 } 
 
-// createObject(infiniti);
-createObject(johnny);
+// createObject(infiniti, false);
+const fontLoader = new FontLoader();
+const font = await fontLoader.loadAsync(nimbus)
+const textGeo = new TextGeometry('Loading...', {
+    font: font,
+    size: 1,
+    height: .2,
+    curveSegments: 12,
+    bevelEnabled: true,
+    bevelThickness: .05,
+    bevelSize: .05,
+    bevelOffset: 0,
+    bevelSegments: .5
+});
+var textMat = new THREE.MeshLambertMaterial({color: 'black'});
+var textMesh = new THREE.Mesh(textGeo, textMat);
+scene.add(textMesh);
+await createObject(johnny);
+scene.remove(textMesh);
+console.log('remove text')
 // createObject(chris);
 setTimeout(() => {
     createObject(luis);
