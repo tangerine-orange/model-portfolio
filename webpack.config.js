@@ -52,13 +52,9 @@ devServer: {
         ],
       },
       {
-        test: /\.(fbx|jpg|json)/,
+        test: /\.(fbx|jpg)/,
         type: 'asset/resource',
       },
-      // {
-      //   test: /\.json$/,
-      //   loader: 'json-loader'
-      // }
     ],
   },
   resolve: {
